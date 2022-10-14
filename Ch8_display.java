@@ -1,14 +1,16 @@
 import java.awt.*;
+// TODO: only repaint display every so often? flickering is annoying
 
 public class Ch8_display extends Canvas{
-    // https://docs.oracle.com/javase/7/docs/api/java/awt/Canvas.html
+    // https://docs.oracle.com/en/java/javase/19/docs/api/java.desktop/java/awt/Canvas.html
     // https://cs.lmu.edu/~ray/notes/javagraphics/
     Color WHITE = Color.WHITE;
     Color BLACK = Color.BLACK;
-    private int w = 64;
-    private int h = 32;
+    private final int w = 64;
+    private final int h = 32;
     private int res_scale = 1;
     private byte[][] vram = new byte[w * 2][h * 2];  // essentially a bitmap
+    private int keyp = 0xFF;
 
     public Ch8_display() { }
 
@@ -29,7 +31,7 @@ public class Ch8_display extends Canvas{
                 }
             }
         }
-        super.repaint();  // update screen whenever a sprite is drawn
+        //super.repaint();  // update screen whenever a sprite is drawn
     }
 
     public void init() {
@@ -52,12 +54,20 @@ public class Ch8_display extends Canvas{
         }
     }
 
+    public int get_keyp() {
+        return keyp;
+    }
+
     public int get_scale() {
         return res_scale;
     }
 
     public byte[][] get_vram() {
         return vram;
+    }
+
+    public void set_keyp(int n) {
+        keyp = n & 0xFF;
     }
 
     public void set_scale(int n) {

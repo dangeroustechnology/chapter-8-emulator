@@ -11,7 +11,7 @@ public class Ch8_reader {
         memory = array;
         try {
             InputStream in = new FileInputStream(path);
-            int read = -1;
+            int read;
             int mem = 512;  // program ram starts at 0x200 = 512
             while ((read = in.read()) != -1) {
                 memory[mem] = read & 0xFF;
@@ -27,7 +27,7 @@ public class Ch8_reader {
         memory = array;
         try {
             InputStream in = new FileInputStream(path);
-            int read = -1;
+            int read;
             int mem = index;  // program ram starts at 0x200 = 512
             while ((read = in.read()) != -1) {
                 memory[mem] = read & 0xFF;
@@ -43,8 +43,7 @@ public class Ch8_reader {
         try {
             InputStream in = new FileInputStream(inpath);
             OutputStream out = new FileOutputStream(outpath);
-            int read = -1;
-            int i = 0;
+            int read;
             while ((read = in.read()) != -1) {
                 out.write(read);
             }
