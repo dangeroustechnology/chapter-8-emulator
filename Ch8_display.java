@@ -4,13 +4,15 @@ import java.awt.*;
 public class Ch8_display extends Canvas{
     // https://docs.oracle.com/en/java/javase/19/docs/api/java.desktop/java/awt/Canvas.html
     // https://cs.lmu.edu/~ray/notes/javagraphics/
-    Color WHITE = Color.WHITE;
+    Color WHITE = Color.WHITE;  // this is, like, super lazy, but im still doing it
     Color BLACK = Color.BLACK;
     private final int w = 64;
     private final int h = 32;
     private int res_scale = 1;
     private byte[][] vram = new byte[w * 2][h * 2];  // essentially a bitmap
     private int keyp = 0xFF;
+    private Image buff;
+    private Graphics buffgraph;
 
     public Ch8_display() { }
 
@@ -31,7 +33,7 @@ public class Ch8_display extends Canvas{
                 }
             }
         }
-        //super.repaint();  // update screen whenever a sprite is drawn
+        super.repaint();  // update screen whenever a sprite is drawn
     }
 
     public void init() {
@@ -43,15 +45,31 @@ public class Ch8_display extends Canvas{
     }
 
     public void paint(Graphics g) {
-        super.setBackground(WHITE);
-        g.setColor(BLACK);
+        if (buff == null) {  // if no buffer exists, make one
+            buff = createImage(getWidth(), getHeight());
+            buffgraph = buff.getGraphics();
+        }
+        buffgraph.setColor(WHITE);
+        buffgraph.fillRect(0, 0, getWidth(), getHeight());  // fill bg
+        buffgraph.setColor(BLACK);
         for (int i = 0; i < w * res_scale; i++) {
             for (int j = 0; j < h * res_scale; j++) {
                 if (vram[i][j] == 1) {
-                    g.fillRect(i * (8/res_scale), j * (8/res_scale), 8/res_scale, 8/res_scale);
+                    buffgraph.fillRect(i * (8/res_scale), j * (8/res_scale), 8/res_scale, 8/res_scale);
                 }
             }
         }
+        g.drawImage(buff, 0, 0, this); // draw once whole field has been filled
+
+//        setBackground(WHITE);
+//        g.setColor(BLACK);
+//        for (int i = 0; i < w * res_scale; i++) {
+//            for (int j = 0; j < h * res_scale; j++) {
+//                if (vram[i][j] == 1) {
+//                    g.fillRect(i * (8/res_scale), j * (8/res_scale), 8/res_scale, 8/res_scale);
+//                }
+//            }
+//        }
     }
 
     public int get_keyp() {

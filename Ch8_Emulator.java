@@ -274,9 +274,12 @@ public class Ch8_Emulator {
 
     public void start_display() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(display);
+        frame.getContentPane().add(display);
+//        frame.add(display);
         frame.setSize(512, 256);
         frame.setVisible(true);
+//        display.createBufferStrategy(2);
+//        System.out.println(display.getBufferStrategy());
     }
 
     public void step_emu() {
